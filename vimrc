@@ -20,6 +20,10 @@ colorscheme pablo
 
 syntax enable
 
+" Removes searching in files in folder
+" verbose setglobal complete?
+setglobal complete-=i
+
 set visualbell                  " Flash screen instead of beep sound
 set encoding=utf-8              " Change how vim represents characters on the screen
 set fileencoding=utf-8          " Set the encoding of files written
@@ -57,6 +61,12 @@ set showcmd                     " show command in bottom bar
 set showmatch                   " highlight matching [{()}]
 set incsearch                   " search as characters are entered
 set hlsearch                    " highlight matches
+
+" Language options
+" Normally un set to avoid error with code but if you want to add 
+" spelling you can enable it and remove it later
+"set spell
+"set spelllang=en_us, es
 
 " move vertically by visual line
 nnoremap j gj
@@ -97,7 +107,12 @@ inoremap <>     <>
 " Remaps
 let mapleader = " "
 
-nnoremap <C-L> :nohl<CR><C-L>
+" Quick saving and quit
+map <leader>w :w<CR>
+map <leader>q :wq<CR>
+
+map <leader>ñ :nohl<CR>
+map <leader><leader>ñ :redraw!<CR>
 
 " Remaping window movements
 map <leader>h :wincmd h<CR>
@@ -108,6 +123,7 @@ map <leader>l :wincmd l<CR>
 map <leader><leader>l :wincmd v<CR>
 map <leader><leader>k :wincmd s<CR>
 map <leader><leader>j :wincmd c<CR>
+map <leader><leader>h :wincmd o<CR>
 
 map <leader>r+ :vertical resize +5<CR>
 map <leader>r- :vertical resize -5<CR>
@@ -120,6 +136,7 @@ map <leader>s :tabc<CR>
 
 " Opening Vertical Ex
 map <leader>o :Vex <CR>
+map <leader><leader>o :Ex <CR>
 
 " Buffers and args
 map <leader>i :buffers <CR>:bu
@@ -149,3 +166,20 @@ nnoremap <leader>gf :YcmCompleter FixIt<CR>
 
 " Multi Cursor
 let g:multi_cursor_quit_key = '<Esc>'
+
+" Explorer configuration
+let g:netrw_banner = 1
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 2
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+let g:netrw_keepdir = 1
+
+"augroup ProjectDrawer
+"    autocmd!
+"    autocmd VimEnter * :Vexplore
+"augroup END
+
+" add yaml stuffs
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml "foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
