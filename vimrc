@@ -48,8 +48,15 @@ set autoindent                  " indent when moving to the next line while writ
 set expandtab                   " expand tabs into spaces
 set softtabstop=4               " number of spaces in tab when editing
 set shiftwidth=4                " when using the >> or << commands, shift lines by 4 spaces
-set cursorline                  " show a visual line under the cursor's current line
+
+"exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+"set list
+
 hi CursorLine ctermbg=40 ctermfg=30 "8 = dark gray, 15 = white
+set cursorline                  " show a visual line under the cursor's current line
+
+hi ColorColumn ctermbg=magenta
+call matchadd('ColorColumn', '\%101v', 100)
 
 set showmatch                   " show the matching part of the pair for [] {} and ()
 "let python_highlight_all = 1    " enable all Python syntax highlighting features
