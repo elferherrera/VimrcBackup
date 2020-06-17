@@ -46,7 +46,7 @@ set tabstop=4                   " set tabs to have 4 spaces
 set autoindent                  " indent when moving to the next line while writing code
 set expandtab                   " expand tabs into spaces
 set softtabstop=4               " number of spaces in tab when editing
-set shiftwidth=4                " when using the >> or << commands, shift lines by 4 spaces
+set shiftwidth=4                " when using the >> or <commands, shift lines by 4 spaces
 
 "exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 "set list
@@ -79,31 +79,11 @@ set laststatus=2                " Show lightline wven when only one pane is open
 nnoremap j gj
 nnoremap k gk
 
-" move to beginning/end of line
-nnoremap B ^
-nnoremap E $
-
-" $/^ doesn't do anything
-nnoremap $ <nop>
-nnoremap ^ <nop>
-
 " Special mappings
 " Automatically closing braces
-inoremap {      {}<Left>
 inoremap {<CR>  {<CR>}<Esc>O
-inoremap {{     {
-inoremap {}     {}
-inoremap [      []<Left>
-inoremap [[     [
-inoremap (      ()<Left>
 inoremap (<CR>  (<CR>)<Esc>O
-inoremap ((     (
-inoremap "      ""<Left>
-inoremap ""     "
-inoremap <      <><Left>
-inoremap <<CR>  <<CR>><Esc>O
-inoremap <<     <
-inoremap <>     <>
+inoremap [<CR>  [<CR>]<Esc>O
 
 " Remaps
 let mapleader = " "
@@ -114,6 +94,7 @@ map <leader>y :tag <c-r><c-w><cr>
 " Quick saving and quit
 map <leader>w :w<CR>
 map <leader>q :wq<CR>
+map <leader><leader>q :q!<CR>
 
 map <leader>ñ :nohl<CR>
 map <leader><leader>ñ :redraw!<CR>
@@ -162,9 +143,9 @@ map <leader>o :NERDTreeToggle<CR>
 map <leader>p :FZF<CR>
 map <leader><leader>p :Rg<CR>
 let g:fzf_action = {
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
+            \ 'ctrl-s': 'split',
+            \ 'ctrl-v': 'vsplit'
+            \ }
 
 " add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml "foldmethod=indent
@@ -198,14 +179,14 @@ set signcolumn=yes
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
@@ -215,9 +196,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " position. Coc only does snippet and additional edit on confirm.
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -234,7 +215,7 @@ nmap gr <Plug>(coc-references)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
+    if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
     call CocAction('doHover')
@@ -298,18 +279,19 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings using CoCList:
 " Show all diagnostics.
-nnoremap <leader>a  :<C-u>CocList diagnostics<cr>
+nnoremap <leader>z  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <leader>z  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <leader>c  :<C-u>CocList commands<cr>
+nnoremap <leader><leader>z  :<C-u>CocList extensions<cr>
+
 " Find symbol of current document.
 nnoremap <leader>x  :<C-u>CocList outline<cr>
+
+" Show commands.
+nnoremap <leader>c  :<C-u>CocList commands<cr>
+" Show actions.
+nnoremap <leader><leader>c  :<C-u>CocAction<cr>
+
 " Search workspace symbols.
 nnoremap <leader>v  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <leader><leader>r  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <leader><leader>e  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <leader>b  :<C-u>CocListResume<CR>

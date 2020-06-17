@@ -2,4 +2,12 @@
     "python.linting.pylintArgs": [
         "--generated-members=cv2.*, torch.*, dlib.*"
     ],
+    "languageserver": {
+        "golang": {
+            "command": "gopls", 
+            "rootPatterns": ["go.mod"],
+            "disableDynamicRegister": true,
+            "filetypes": ["go"]
+        }
+    }
 }
