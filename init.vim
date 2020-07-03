@@ -88,13 +88,19 @@ inoremap [<CR>  [<CR>]<Esc>O
 " Remaps
 let mapleader = " "
 
-" jump tags
-map <leader>y :tag <c-r><c-w><cr>
+" Open vimrc
+map <leader><leader>q :e $MYVIMRC<CR>
+
+" Jump tags
+map <leader>{ :tag <c-r><c-w><cr>
+
+" Open terminal
+map <leader>y :terminal<CR>
 
 " Quick saving and quit
 map <leader>w :w<CR>
-map <leader>q :wq<CR>
-map <leader><leader>q :q!<CR>
+map <leader>qw :wq<CR>
+map <leader>qq :q!<CR>
 
 map <leader>ñ :nohl<CR>
 map <leader><leader>ñ :redraw!<CR>
@@ -106,10 +112,10 @@ map <leader>k :wincmd k<CR>
 map <leader>l :wincmd l<CR>
 
 " Split navigation
-map <leader><leader>l :wincmd v<CR>
-map <leader><leader>k :wincmd s<CR>
-map <leader><leader>j :wincmd c<CR>
-map <leader><leader>h :wincmd o<CR>
+map <leader>gl :wincmd v<CR>
+map <leader>gk :wincmd s<CR>
+map <leader>gj :wincmd c<CR>
+map <leader>gh :wincmd o<CR>
 
 " Split resizing
 map <leader>r+ :vertical resize +5<CR>
@@ -118,14 +124,14 @@ map <leader><leader>r+ :resize +5<CR>
 map <leader><leader>r- :resize -5<CR>
 
 " Remaping for tabs
-map <leader>g :tabe<CR>
-map <leader>f :tabn<CR>
-map <leader>d :tabp<CR>
-map <leader>s :tabc<CR>
+map <leader>gg :tabe<CR>
+map <leader>gf :tabn<CR>
+map <leader>gd :tabp<CR>
+map <leader>gs :tabc<CR>
 
 " Buffers and args
-map <leader>i :buffers <CR>:bu
-map <leader><leader>i :buffers <CR>:bd
+map <leader>ii :buffers <CR>:bu
+map <leader>iu :buffers <CR>:bd
 map <leader>u :args <CR>
 nnoremap <leader>m :bnext<CR>
 nnoremap <leader>n :bprev<CR>
@@ -146,6 +152,13 @@ let g:fzf_action = {
             \ 'ctrl-s': 'split',
             \ 'ctrl-v': 'vsplit'
             \ }
+
+" Fugitive mapping
+nmap <leader>bb :G<CR>
+nmap <leader>bv :Gclog<CR>
+nmap <leader>bn :Gblame<CR>
+nmap <leader>bg :diffget //2<CR>
+nmap <leader>bh :diffget //3<CR>
 
 " add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml "foldmethod=indent
@@ -279,19 +292,16 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings using CoCList:
 " Show all diagnostics.
-nnoremap <leader>z  :<C-u>CocList diagnostics<cr>
+nnoremap <leader>zz  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <leader><leader>z  :<C-u>CocList extensions<cr>
-
+nnoremap <leader>za  :<C-u>CocList extensions<cr>
 " Find symbol of current document.
-nnoremap <leader>x  :<C-u>CocList outline<cr>
-
+nnoremap <leader>zx  :<C-u>CocList outline<cr>
 " Show commands.
-nnoremap <leader>c  :<C-u>CocList commands<cr>
+nnoremap <leader>zc  :<C-u>CocList commands<cr>
 " Show actions.
-nnoremap <leader><leader>c  :<C-u>CocAction<cr>
-
+nnoremap <leader>zs  :<C-u>CocAction<cr>
 " Search workspace symbols.
-nnoremap <leader>v  :<C-u>CocList -I symbols<cr>
+nnoremap <leader>zd  :<C-u>CocList -I symbols<cr>
 " Resume latest coc list.
-nnoremap <leader>b  :<C-u>CocListResume<CR>
+nnoremap <leader>zv  :<C-u>CocListResume<CR>

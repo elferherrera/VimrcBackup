@@ -9,5 +9,6 @@
             "disableDynamicRegister": true,
             "filetypes": ["go"]
         }
-    }
+    },
+    "java.errors.incompleteClasspath.severity": "ignore"
 }
