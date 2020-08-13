@@ -117,6 +117,14 @@ map <leader>gk :wincmd s<CR>
 map <leader>gj :wincmd c<CR>
 map <leader>gh :wincmd o<CR>
 
+" Move panels
+map <leader>gr :wincmd r<CR>
+map <leader>gR :wincmd R<CR>
+map <leader>gL :wincmd L<CR>
+map <leader>gK :wincmd K<CR>
+map <leader>gJ :wincmd J<CR>
+map <leader>gH :wincmd H<CR>
+
 " Split resizing
 map <leader>r+ :vertical resize +5<CR>
 map <leader>r- :vertical resize -5<CR>
@@ -156,9 +164,22 @@ let g:fzf_action = {
 " Fugitive mapping
 nmap <leader>bb :G<CR>
 nmap <leader>bv :Gclog<CR>
+nmap <leader>bc :Gdiffsplit<CR>
 nmap <leader>bn :Gblame<CR>
 nmap <leader>bg :diffget //2<CR>
 nmap <leader>bh :diffget //3<CR>
+
+" lightline
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
 
 " add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml "foldmethod=indent
