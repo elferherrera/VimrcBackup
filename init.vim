@@ -151,11 +151,19 @@ nnoremap <Left> :cprev<CR>
 " NERDTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <leader>o :NERDTreeToggle<CR>
+map <leader>oo :NERDTreeToggle<CR>
+
+" Tagbar
+map <leader>op :TagbarToggle<CR>
 
 " fzf mapping
-map <leader>p :FZF<CR>
-map <leader><leader>p :Rg<CR>
+map <leader>pp :Files<CR>
+map <leader>po :Rg<CR>
+map <leader>pi :Buffers<CR>
+map <leader>pñ :BLines<CR>
+map <leader>pl :Lines<CR>
+map <leader>pk :Tags<CR>
+
 let g:fzf_action = {
             \ 'ctrl-s': 'split',
             \ 'ctrl-v': 'vsplit'
@@ -236,8 +244,8 @@ else
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
-nmap <leader>e <Plug>(coc-diagnostic-prev)
-nmap <leader>r <Plug>(coc-diagnostic-next)
+nmap <leader>ae <Plug>(coc-diagnostic-prev)
+nmap <leader>ar <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nmap gd <Plug>(coc-definition)
@@ -263,8 +271,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>t  <Plug>(coc-format-selected)
-nmap <leader>t  <Plug>(coc-format-selected)
+xmap <leader>at <Plug>(coc-format-selected)
+nmap <leader>at <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -276,8 +284,8 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>ac <Plug>(coc-codeaction-selected)
+nmap <leader>ac <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>ac  <Plug>(coc-codeaction)
@@ -313,16 +321,16 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings using CoCList:
 " Show all diagnostics.
-nnoremap <leader>zz  :<C-u>CocList diagnostics<cr>
+nnoremap <leader>aq  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <leader>za  :<C-u>CocList extensions<cr>
+nnoremap <leader>aw  :<C-u>CocList extensions<cr>
 " Find symbol of current document.
-nnoremap <leader>zx  :<C-u>CocList outline<cr>
+nnoremap <leader>as  :<C-u>CocList outline<cr>
 " Show commands.
-nnoremap <leader>zc  :<C-u>CocList commands<cr>
+nnoremap <leader>az  :<C-u>CocList commands<cr>
 " Show actions.
-nnoremap <leader>zs  :<C-u>CocAction<cr>
+nnoremap <leader>aa  :<C-u>CocAction<cr>
 " Search workspace symbols.
-nnoremap <leader>zd  :<C-u>CocList -I symbols<cr>
+nnoremap <leader>ad  :<C-u>CocList -I symbols<cr>
 " Resume latest coc list.
-nnoremap <leader>zv  :<C-u>CocListResume<CR>
+nnoremap <leader>ax  :<C-u>CocListResume<CR>
