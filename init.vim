@@ -4,12 +4,15 @@
 " 
 " Plugins
 " coc.nvim-release
+" elm-vim
 " fzf
 " fzf.vim
 " lightline.vim
 " nerdtree
+" tagbar
 " vim-fugitive
 " vim-monokai
+" vim-surround
 
 filetype plugin indent on
 
@@ -73,6 +76,7 @@ set laststatus=2                " Show lightline wven when only one pane is open
 " spelling you can enable it and remove it later
 "set spell
 "set spelllang=en_us, es
+"
 
 
 " move vertically by visual line
@@ -102,8 +106,11 @@ map <leader>w :w<CR>
 map <leader>qw :wq<CR>
 map <leader>qq :q!<CR>
 
-map <leader>ñ :nohl<CR>
-map <leader><leader>ñ :redraw!<CR>
+" Open TODO list
+map <leader>qa :e ~/Desktop/TODO.txt<CR>
+
+map <leader>- :nohl<CR>
+map <leader><leader>- :redraw!<CR>
 
 " Remaping window movements
 map <leader>h :wincmd h<CR>
@@ -163,6 +170,9 @@ map <leader>pi :Buffers<CR>
 map <leader>pñ :BLines<CR>
 map <leader>pl :Lines<CR>
 map <leader>pk :Tags<CR>
+
+" VIFM mapping
+map <leader>ñ :Vifm<CR>
 
 let g:fzf_action = {
             \ 'ctrl-s': 'split',
