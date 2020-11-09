@@ -1,0 +1,149 @@
+# Don't print a new line at the start of the prompt
+add_newline = false
+
+[character]      
+symbol = ">"     
+error_symbol = "X"
+use_symbol_for_status = true
+vicmd_symbol = "<"
+style_success = "bold green"
+style_failure = "bold red"
+
+[aws]
+#symbol = "AWS "
+disabled = false
+
+[username]
+#symbol = "user "
+disabled = false
+
+[git_branch]
+#symbol = "GIT "
+#truncation_length = 10
+truncation_symbol = "..."
+
+[git_commit]
+#symbol = "commit "
+
+[git_state]
+#symbol = "state "
+
+[git_status]
+#symbol = "status "
+
+[time]
+disabled = false
+format = "[ %T ]"
+utc_time_offset = "-5"
+time_range = "10:00:00-14:00:00"
+
+[directory]
+disabled = false
+style = "bold underline red"
+
+[rust]
+#symbol = "RS "
+disabled = false
+
+[java]
+style = "JAVA "
+disabled = false
+
+[python]
+#symbol = "PY "
+disabled = false
+
+[conda]
+#symbol = "Conda "
+disabled = false
+
+#[hg_branch]
+#disabled = true
+#
+#[docker_context]
+#disabled = true
+#
+#[package]
+#disabled = true
+#
+#[dotnet]
+#disabled = true
+#
+#[elixir]
+#disabled = true
+#
+#[elm]
+#disabled = true
+#
+#[erlang]
+#disabled = true
+#
+#[golang]
+#disabled = true
+#
+#[julia]
+#disabled = true
+#
+#[nim]
+#disabled = true
+#
+#[nodejs]
+#disabled = true
+#
+#[ocaml]
+#disabled = true
+#
+#[php]
+#disabled = true
+#
+#[purescript]
+#disabled = true
+#
+#[ruby]
+#disabled = true
+
+
+#[custom]
+#symbol = "custom "
+#disabled = false
+
+#[jobs]
+#symbol = "jobs "
+#disabled = false
+
+#[env_var]
+#symbol = "env_var "
+#disabled = false
+
+
+#[terraform]
+#symbol = "terraform"
+#disabled = false
+#
+#[zig]
+#symbol = "zig"
+#disabled = false
+#
+#[nix_shell]
+#symbol = "nix_shell"
+#disabled = false
+#
+#[memory_usage]
+#symbol = "memory_usage"
+#disabled = false
+#
+#[crystal]
+#symbol = "crystal"
+#disabled = false
+#
+#[cmd_duration]
+#symbol = "cmd_duration"
+#disabled = false
+#
+#[line_break]
+#symbol = "line_break"
+#disabled = false
+#
+#[battery]
+#symbol = "battery"
+#disabled = false
