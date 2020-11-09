@@ -1,0 +1,167 @@
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+# Latest config template: https://github.com/alacritty/alacritty/releases
+#font:
+#  normal:
+#    family: JetBrains Mono
+#    style: Regular
+#  bold:
+#    family: JetBrains Mono
+#    style: Bold
+#  italic:
+#    family: JetBrains Mono
+#    style: Italic
+#  bold_italic:
+#    family: JetBrains Mono
+#    style: Bold Italic
+#  size: 10
+#  use_thin_strokes: true
+
+# If `true`, bold text is drawn using the bright color variants.
+draw_bold_text_with_bright_colors: true
+
+background_opacity: 0.9
+
+mouse_bindings:
+ - { mouse: Middle, action: PasteSelection }
+
+key_bindings:
+  - { key: V, mods: Command, action: Paste }
+  - { key: C, mods: Command, action: Copy  }
+
+# The definition of color schemes.
+schemes:
+  gruvbox_medium_dark: &gruvbox_medium_dark
+    primary:
+      # hard contrast: background = '#1d2021'
+      background: '#282828'
+      # soft contrast: background = '#32302f'
+      foreground: '#ebdbb2'
+    normal:
+      black:   '#282828'
+      red:     '#cc241d'
+      green:   '#50fa7b'
+      yellow:  '#d79921'
+      blue:    '#458588'
+      magenta: '#b16286'
+      cyan:    '#689d6a'
+      white:   '#a89984'
+    bright:
+      black:   '#928374'
+      red:     '#fb4934'
+      green:   '#5af78e'
+      yellow:  '#fabd2f'
+      blue:    '#83a598'
+      magenta: '#d3869b'
+      cyan:    '#8ec07c'
+      white:   '#ebdbb2'
+
+  gruvbox_material_medium_dark: &gruvbox_material_medium_dark
+    primary:
+      background: '#282828'
+      foreground: '#dfbf8e'
+    normal:
+      black:   '#665c54'
+      red:     '#ea6962'
+      green:   '#a9b665'
+      yellow:  '#e78a4e'
+      blue:    '#7daea3'
+      magenta: '#d3869b'
+      cyan:    '#89b482'
+      white:   '#dfbf8e'
+    bright:
+      black:   '#928374'
+      red:     '#ea6962'
+      green:   '#a9b665'
+      yellow:  '#e3a84e'
+      blue:    '#7daea3'
+      magenta: '#d3869b'
+      cyan:    '#89b482'
+      white:   '#dfbf8e'
+
+  argonaut: &argonaut
+    # Default colors
+    primary:
+      background: '#292C3E'
+      foreground: '#EBEBEB'
+
+    # Cursor colors
+    cursor:
+     text: '#FF261E'
+     cursor: '#FF261E'
+
+    # Normal colors
+    normal:
+      black:   '#0d0d0d'
+      red:     '#FF301B'
+      green:   '#A0E521'
+      yellow:  '#FFC620'
+      blue:    '#1BA6FA'
+      magenta: '#8763B8'
+      cyan:    '#21DEEF'
+      white:   '#EBEBEB'
+
+    # Bright colors
+    bright:
+      black:   '#6D7070'
+      red:     '#FF4352'
+      green:   '#B8E466'
+      yellow:  '#FFD750'
+      blue:    '#1BA6FA'
+      magenta: '#A578EA'
+      cyan:    '#73FBF1'
+      white:   '#FEFEF8'
+
+  Ayu: &ayu
+    # Default colors
+    primary:
+      background: '#0A0E14'
+      foreground: '#B3B1AD'
+
+    # Normal colors
+    normal:
+      black: '#01060E'
+      red: '#EA6C73'
+      green: '#91B362'
+      yellow: '#F9AF4F'
+      blue: '#53BDFA'
+      magenta: '#FAE994'
+      cyan: '#90E1C6'
+      white: '#C7C7C7'
+
+    # Bright colors
+    bright:
+      black: '#686868'
+      red: '#F07178'
+      green: '#C2D94C'
+      yellow: '#FFB454'
+      blue: '#59C2FF'
+      magenta: '#FFEE99'
+      cyan: '#95E6CB'
+      white: '#FFFFFF'
+
+  panda: &panda
+    primary:
+      background: '#292A2B'
+      foreground: '#E6E6E6'
+
+    normal:
+      black:   '#292A2B'
+      red:     '#FF2C6D'
+      green:   '#19f9d8'
+      yellow:  '#FFB86C'
+      blue:    '#45A9F9'
+      magenta: '#FF75B5'
+      cyan:    '#67d3c2'
+      orange:  '#B084EB'
+      white:   '#E6E6E6'
+    bright:
+      black:   '#292A2B'
+      red:     '#FF2C6D'
+      green:   '#19f9d8'
+      yellow:  '#ffcc95'
+      blue:    '#6FC1FF'
+      magenta: '#FF9AC1'
+      cyan:    '#67d3c2'
+      white:   '#ffffff'
+
+colors: *ayu
