@@ -2,14 +2,5 @@
     "python.linting.pylintArgs": [
         "--generated-members=cv2.*, torch.*, dlib.*"
     ],
-    "languageserver": {
-        "golang": {
-            "command": "gopls", 
-            "rootPatterns": ["go.mod"],
-            "disableDynamicRegister": true,
-            "filetypes": ["go"]
-        }
-    },
-    "java.errors.incompleteClasspath.severity": "ignore",
-    "java.jdt.ls.vmargs": "-javaagent:C:\\Users\\fernandoj.herrera\\java\\lombok.jar -Xbootclasspath/a:C:\\Users\\fernandoj.herrera\\java\\lombok.jar"
+    "java.errors.incompleteClasspath.severity": "ignore"
 }

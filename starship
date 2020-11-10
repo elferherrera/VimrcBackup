@@ -1,149 +1,81 @@
-# Don't print a new line at the start of the prompt
+# Starship command prompt configuration file. Colour choice and over-use of emoji
+# is to help blend in with Ubuntu MATE default theme, Ambiant-Mate.
+
+# disable starship from forcing a new line to be taken. Solved the empty line 
+# at start of terminal
 add_newline = false
 
+[line_break]
+disabled = false
+
+# Replace the "❯" symbol in the prompt with "➟"
 [character]      
-symbol = ">"     
-error_symbol = "X"
 use_symbol_for_status = true
-vicmd_symbol = "<"
-style_success = "bold green"
-style_failure = "bold red"
+symbol = "--"  
+error_symbol = "✗"
+style_success = "bold #00A652"
+style_failure = "bold #df382c"
 
-[aws]
-#symbol = "AWS "
-disabled = false
-
+# Hide the username. The username will only show in certain scenarios
 [username]
-#symbol = "user "
+disabled = true
+
+# shows the hostname on new lines
+[hostname]
+ssh_only = false
+prefix = "💻️ "
+# suffix = ">>"
+trim_at = ".companyname.com"
 disabled = false
+style = "bold italic #87A752"
 
-[git_branch]
-#symbol = "GIT "
-#truncation_length = 10
-truncation_symbol = "..."
-
-[git_commit]
-#symbol = "commit "
-
-[git_state]
-#symbol = "state "
-
-[git_status]
-#symbol = "status "
-
-[time]
-disabled = false
-format = "[ %T ]"
-utc_time_offset = "-5"
-time_range = "10:00:00-14:00:00"
-
+# configure directory
 [directory]
-disabled = false
+truncation_length = 10
+truncate_to_repo = false # truncates directory to root folder if in github repo
+format = "[$path]($style)[$lock_symbol]($lock_style) "
+prefix = " "
 style = "bold underline red"
 
-[rust]
-#symbol = "RS "
+[cmd_duration]
+min_time = 4
+show_milliseconds = false
 disabled = false
+prefix = " "
+style = "bold italic #87A752"
 
-[java]
-style = "JAVA "
+[time]
+time_format = "%T"
+format = "$time($style) "
+style = "bright-white"
 disabled = false
 
 [python]
-#symbol = "PY "
-disabled = false
+format = "[$symbol$version]($style) "
+style = "bold green"
 
-[conda]
-#symbol = "Conda "
-disabled = false
+[git_branch]
+format = " [$symbol$branch]($style) "
+symbol = " "
+style = "bold yellow"
 
-#[hg_branch]
-#disabled = true
-#
-#[docker_context]
-#disabled = true
-#
-#[package]
-#disabled = true
-#
-#[dotnet]
-#disabled = true
-#
-#[elixir]
-#disabled = true
-#
-#[elm]
-#disabled = true
-#
-#[erlang]
-#disabled = true
-#
-#[golang]
-#disabled = true
-#
-#[julia]
-#disabled = true
-#
-#[nim]
-#disabled = true
-#
-#[nodejs]
-#disabled = true
-#
-#[ocaml]
-#disabled = true
-#
-#[php]
-#disabled = true
-#
-#[purescript]
-#disabled = true
-#
-#[ruby]
-#disabled = true
+[git_commit]
+commit_hash_length = 8
+style = "bold white"
 
+[git_state]
+progress_divider = " of "
 
-#[custom]
-#symbol = "custom "
-#disabled = false
-
-#[jobs]
-#symbol = "jobs "
-#disabled = false
-
-#[env_var]
-#symbol = "env_var "
-#disabled = false
-
-
-#[terraform]
-#symbol = "terraform"
-#disabled = false
-#
-#[zig]
-#symbol = "zig"
-#disabled = false
-#
-#[nix_shell]
-#symbol = "nix_shell"
-#disabled = false
-#
-#[memory_usage]
-#symbol = "memory_usage"
-#disabled = false
-#
-#[crystal]
-#symbol = "crystal"
-#disabled = false
-#
-#[cmd_duration]
-#symbol = "cmd_duration"
-#disabled = false
-#
-#[line_break]
-#symbol = "line_break"
-#disabled = false
-#
-#[battery]
-#symbol = "battery"
-#disabled = false
+[git_status]
+conflicted = "C "
+ahead = "AHEAD×${count} "
+behind = "BEHIND×${count} "
+diverged = "DIVERGED×${ahead_count} WITH ×${behind_count} "
+untracked = "UNTRACKED×${count} "
+stashed = "STASHED "
+modified = "MODIFIED×${count} "
+staged = "STAGED×${count} "
+renamed = "RENAMED×${count} "
+deleted = "DELETED×${count} "
+style = "bold italic #87A752"
+format = "$all_status$ahead_behind"
