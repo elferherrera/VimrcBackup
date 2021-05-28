@@ -1,0 +1,29 @@
+prompt = "build-string $(ansi yb) $(date now | date format '%m/%d/%Y %I:%M:%S%.3f') $(ansi reset) ': ' $(ansi gb) $(pwd | path basename) $(ansi reset) ' (' $(ansi rb) $(do -i { git rev-parse --abbrev-ref HEAD } | str trim ) $(ansi reset) ')' '> ' "
+#plugin_dirs = [""]
+
+skip_welcome_message = true
+
+startup = [
+"alias la = ls --long",
+"def nudown [] {fetch https://api.github.com/repos/nushell/nushell/releases | get assets | select name download_count}",
+"def nuver [] {version | pivot key value}",
+"def help-text [s: string] { help commands | select name description | append $(help commands | get subcommands ) | flatten | where description =~ $s || name =~ $s }"
+]
+
+table_mode = "compact"
+
+[color_config]
+header_align = "c"
+header_bold = true
+index_color = "blue"
+leading_trailing_space_bg = "white"
+primitive_filesize = "red"
+primitive_path = "green"
+primitive_string = "cyan"
+
+[line_editor]
+bell_style = "visible"
+edit_mode = "vi"
+completion_match_method = "case-insensitive"
+
+[textview]
