@@ -1,6 +1,0 @@
-{
-    "python.linting.pylintArgs": [
-        "--generated-members=cv2.*, torch.*, dlib.*"
-    ],
-    "java.errors.incompleteClasspath.severity": "ignore"
-}
