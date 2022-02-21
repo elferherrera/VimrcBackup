@@ -7,13 +7,14 @@ call plug#begin('C:/Users/Benzaa/AppData/Local/nvim/pack/plugins')
 "   - e.g. `call plug#begin('~/.vim/plugged')`
 "   - Avoid using standard Vim directory names like 'plugin'
 " Make sure you use single quotes
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'preservim/nerdtree'
 Plug 'sickill/vim-monokai'
-Plug 'itchyny/lightline.vim'
-Plug 'tpope/vim-fugitive'
 
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-lualine/lualine.nvim'
+
+" Git manager
+Plug 'tpope/vim-fugitive'
 
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
@@ -32,25 +33,30 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-buffer'
 
+" LSP status manager
+Plug 'j-hui/fidget.nvim'
+
 " To enable more of the features of rust-analyzer, such as inlay hints and more!
 Plug 'simrat39/rust-tools.nvim'
 
 " Snippet engine
 Plug 'hrsh7th/vim-vsnip'
 
-" Fuzzy finder
 " Optional
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+
+" Fuzzy finder
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Initialize plugin system
 call plug#end()
 
+colorscheme monokai
 
 filetype plugin indent on
 
-colorscheme monokai
 set termguicolors
 
 syntax enable
@@ -110,8 +116,6 @@ set laststatus=2                " Show lightline wven when only one pane is open
 " spelling you can enable it and remove it later
 "set spell
 "set spelllang=en_us, es
-"
-
 
 " move vertically by visual line
 nnoremap j gj
@@ -186,48 +190,135 @@ nnoremap <leader>n :bprev<CR>
 nnoremap <Right> :cnext<CR>
 nnoremap <Left> :cprev<CR>
 
-" NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <leader>oo :NERDTreeToggle<CR>
-
 " fzf mapping
-map <leader>pp :Files<CR>
-map <leader>pl :Lines<CR>
-map <leader>po :BLines<CR>
-map <leader>pi :Rg<CR>
-map <leader>pu :Buffers<CR>
-map <leader>pk :Tags<CR>
+"map <leader>pp :Files<CR>
+"map <leader>pl :Lines<CR>
+"map <leader>po :BLines<CR>
+"map <leader>pi :Rg<CR>
+"map <leader>pu :Buffers<CR>
+"map <leader>pk :Tags<CR>
 
-" VIFM mapping
-map <leader>ñ :Vifm<CR>
+lua <<EOF
+require"fidget".setup{}
+EOF
 
-let g:fzf_action = {
-            \ 'ctrl-s': 'split',
-            \ 'ctrl-v': 'vsplit'
-            \ }
+"nvim-tree
+map <leader>oo :NvimTreeToggle<CR>
+lua <<EOF
+-- init.lua
+-- following options are the default
+-- each of these are documented in `:help nvim-tree.OPTION_NAME`
+require'nvim-tree'.setup {
+  disable_netrw        = false,
+  hijack_netrw         = true,
+  open_on_setup        = false,
+  ignore_ft_on_setup   = {},
+  auto_close           = true,
+  auto_reload_on_write = true,
+  open_on_tab          = false,
+  hijack_cursor        = false,
+  update_cwd           = false,
+  hijack_unnamed_buffer_when_opening = false,
+  hijack_directories   = {
+    enable = true,
+    auto_open = true,
+  },
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  update_focused_file = {
+    enable      = false,
+    update_cwd  = false,
+    ignore_list = {}
+  },
+  system_open = {
+    cmd  = nil,
+    args = {}
+  },
+  filters = {
+    dotfiles = false,
+    custom = {}
+  },
+  git = {
+    enable = true,
+    ignore = true,
+    timeout = 500,
+  },
+  view = {
+    width = 30,
+    height = 30,
+    hide_root_folder = false,
+    side = 'left',
+    auto_resize = false,
+    mappings = {
+      custom_only = false,
+      list = {}
+    },
+    number = false,
+    relativenumber = false,
+    signcolumn = "yes"
+  },
+  trash = {
+    cmd = "trash",
+    require_confirm = true
+  },
+  actions = {
+    change_dir = {
+      global = false,
+    },
+    open_file = {
+      quit_on_open = false,
+    }
+  }
+}
+EOF
+
+lua <<EOF
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {}
+}
+EOF
 
 " Fugitive mapping
 nmap <leader>bb :G<CR>
-nmap <leader>bv :Gclog<CR>
-nmap <leader>bc :Gdiffsplit<CR>
+nmap <leader>bv :Gvdiffsplit<CR>
+nmap <leader>bc :Gclog -10<CR>
 nmap <leader>bn :Gblame<CR>
 nmap <leader>bg :diffget //2<CR>
 nmap <leader>bh :diffget //3<CR>
 
 tnoremap <Esc> <C-\><C-n>
-
-" lightline
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
 
 " add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml "foldmethod=indent
@@ -268,13 +359,15 @@ local opts = {
     server = {
         -- on_attach is a callback called when the language server attachs to the buffer
         -- on_attach = on_attach,
+        cmd = { "rust-analyzer" },
+        filetypes = { "rust" },
         settings = {
             -- to enable rust-analyzer settings visit:
             -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
             ["rust-analyzer"] = {
                 -- enable clippy on save
                 checkOnSave = {
-                    command = ""
+                    command = "check"
                 },
             }
         }
@@ -332,6 +425,7 @@ nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> gf    <cmd>lua vim.lsp.buf.formatting()<CR>
 
 " Set updatetime for CursorHold
 " 300ms of no cursor movement to trigger CursorHold
@@ -346,3 +440,26 @@ nnoremap <silent> g] <cmd>lua vim.diagnostic.goto_next()<CR>
 " have a fixed column for the diagnostics to appear in
 " this removes the jitter when warnings/errors flow in
 set signcolumn=yes
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>fr <cmd>Telescope <cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>ft <cmd>Telescope live_grep<cr>
+nnoremap <leader>fg <cmd>Telescope buffers<cr>
+nnoremap <leader>fv <cmd>Telescope help_tags<cr>
+
+lua <<EOF
+require('telescope').setup{
+  defaults = {
+    -- ...
+  },
+  pickers = {
+    find_files = {
+      theme = "dropdown",
+    }
+  },
+  extensions = {
+    -- ...
+  }
+}
+EOF
