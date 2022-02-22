@@ -12,11 +12,25 @@ def create_left_prompt [] {
         ($nu.cwd | path basename)
         (char space)
         ($R)
-        (char -u e0b0)     
     ] | str collect)
+
+    let branch = (do -i { git rev-parse --abbrev-ref HEAD } | str trim)
+    let branch_segment = if $branch == "" {
+        $branch
+    } else {
+        [ 
+            (ansi { fg: "#BC0000" bg: "#D3D7CF"}) 
+            (char space)
+            $branch
+            (char space)
+            ($R)
+            (char -u e0b0)     
+        ] | str collect
+    }
 
     [
         $path_segment
+        $branch_segment
     ] | str collect
 }
 
