@@ -9,10 +9,11 @@ call plug#begin('C:/Users/Benzaa/AppData/Local/nvim/pack/plugins')
 " Make sure you use single quotes
 
 "Plug 'sickill/vim-monokai'
-Plug 'projekt0n/github-nvim-theme'
+"Plug 'projekt0n/github-nvim-theme'
+Plug 'rebelot/kanagawa.nvim'
 
-Plug 'kyazdani42/nvim-tree.lua'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-lualine/lualine.nvim'
 
 " Git manager
@@ -220,48 +221,87 @@ nnoremap <leader>ft <cmd>Telescope live_grep<cr>
 nnoremap <leader>fg <cmd>Telescope buffers<cr>
 nnoremap <leader>fv <cmd>Telescope help_tags<cr>
 
-" ====================================================================
-" LUA FILES
-"colorscheme monokai
-lua <<EOF
-require("github-theme").setup({
-  theme_style = "dark",
-
-  comment_style = "NONE",
-  keyword_style = "NONE",
-  function_style = "NONE",
-  variable_style = "NONE",
-
-  sidebars = {"qf", "vista_kind", "terminal", "packer"},
-  dark_sidebar = true,
-
-  -- Change the "hint" color to the "orange" color, and make the "error" color bright red
-  colors = {hint = "orange", error = "#ff0000"},
-
-  -- Overwrite the highlight groups
-  overrides = function(c)
-    return {
-      htmlTag = {fg = c.red, bg = "#282c34", sp = c.hint, style = "underline"},
-      DiagnosticHint = {link = "LspDiagnosticsDefaultHint"},
-      -- this will remove the highlight groups
-      TSField = {},
-    }
-  end
-})
-EOF
-
 "nvim-tree
 map <leader>oo :NvimTreeToggle<CR>
+map <leader>op :NvimTreeFocus<CR>
+
+" :help completeopt
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
+set completeopt=menuone,noinsert,noselect
+
+" Avoid showing extra messages when using completion
+set shortmess+=c
+
+" ====================================================================
+" Styles
+"colorscheme monokai
 
 lua <<EOF
+-- Default options:
+require('kanagawa').setup({
+    undercurl = true,           -- enable undercurls
+    commentStyle = "italic",
+    functionStyle = "NONE",
+    keywordStyle = "italic",
+    statementStyle = "bold",
+    typeStyle = "NONE",
+    variablebuiltinStyle = "italic",
+    specialReturn = true,       -- special highlight for the return keyword
+    specialException = true,    -- special highlight for exception handling keywords
+    transparent = false,        -- do not set background color
+    dimInactive = false,        -- dim inactive window `:h hl-NormalNC`
+    globalStatus = false,       -- adjust window separators highlight for laststatus=3
+    colors = {},
+    overrides = {},
+})
+
+-- setup must be called before loading
+vim.cmd("colorscheme kanagawa")
+EOF
+
+"lua <<EOF
+"require("github-theme").setup({
+"  theme_style = "dark",
+"
+"  comment_style = "NONE",
+"  keyword_style = "NONE",
+"  function_style = "NONE",
+"  variable_style = "NONE",
+"
+"  sidebars = {"qf", "vista_kind", "terminal", "packer"},
+"  dark_sidebar = true,
+"
+"  -- Change the "hint" color to the "orange" color, and make the "error" color bright red
+"  colors = {hint = "orange", error = "#ff0000"},
+"
+"  -- Overwrite the highlight groups
+"  overrides = function(c)
+"    return {
+"      htmlTag = {fg = c.red, bg = "#282c34", sp = c.hint, style = "underline"},
+"      DiagnosticHint = {link = "LspDiagnosticsDefaultHint"},
+"      -- this will remove the highlight groups
+"      TSField = {},
+"    }
+"  end
+"})
+"EOF
+
+" ====================================================================
+" LUA FILES
+
+lua <<EOF
+vim.opt.splitright = true
+
 -- setup with all defaults
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 require'nvim-tree'.setup {
   auto_close = false,
-  auto_reload_on_write = true,
-  disable_netrw = false,
+  auto_reload_on_write = false,
+  disable_netrw = true,
   hide_root_folder = false,
-  hijack_cursor = false,
+  hijack_cursor = true,
   hijack_netrw = true,
   hijack_unnamed_buffer_when_opening = false,
   ignore_buffer_on_setup = false,
@@ -272,8 +312,8 @@ require'nvim-tree'.setup {
   view = {
     width = 30,
     height = 30,
-    side = "right",
-    preserve_window_proportions = false,
+    side = "left",
+    preserve_window_proportions = true,
     number = false,
     relativenumber = true,
     signcolumn = "yes",
@@ -327,7 +367,7 @@ require'nvim-tree'.setup {
       quit_on_open = false,
       resize_window = true,
       window_picker = {
-        enable = false,
+        enable = true,
         chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
         exclude = {
           filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
@@ -353,6 +393,8 @@ require'nvim-tree'.setup {
 
 EOF
 
+" ====================================================================
+" LUALINE
 lua <<EOF
 require('lualine').setup {
   options = {
@@ -413,14 +455,95 @@ nnoremap <leader>ty <cmd>HopChar2 <cr>
 nnoremap <leader>tr <cmd>HopWord <cr>
 nnoremap <leader>tg <cmd>HopLine <cr>
 
+" ====================================================================
+" NVIM-LSPCONFIG
+lua <<EOF
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gW', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'g0', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts_keymap)
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { 'pyright' }
+for _, lsp in pairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      -- This will be the default in neovim 0.7+
+      debounce_text_changes = 150,
+    }
+  }
+end
+EOF
+
+" ====================================================================
+" RUST-TOOLS
 lua <<EOF
 -- Update this path
 local extension_path = vim.env.HOME .. 'C:\\Users\\Benzaa\\.vscode\\extensions\\vadimcn.vscode-lldb-1.7.0'
 local codelldb_path = extension_path .. 'adapter\\codelldb'
 local liblldb_path = extension_path .. 'lldb\\lib\\liblldb.so'
 
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local opts_keymap = { noremap=true, silent=true }
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gw', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'g0', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>LspStop<CR>', opts_keymap)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gS', '<cmd>LspRestart<CR>', opts_keymap)
+end
+
 local opts = {
-	tools = { -- rust-tools options
+	tools = { 
+        -- rust-tools options
 		-- automatically set inlay hints (type hints)
 		-- There is an issue due to which the hints are not applied on the first
 		-- opened file. For now, write to the file to trigger a reapplication of
@@ -512,7 +635,7 @@ local opts = {
 			-- Backend used for displaying the graph
 			-- see: https://graphviz.org/docs/outputs/
 			-- default: x11
-			backend = "x11",
+			backend = "jpeg",
 			-- where to store the output, nil for no output stored (relative
 			-- path from pwd)
 			-- default: nil
@@ -526,60 +649,7 @@ local opts = {
 			-- Is used for input validation and autocompletion
 			-- Last updated: 2021-08-26
 			enabled_graphviz_backends = {
-				"bmp",
-				"cgimage",
-				"canon",
-				"dot",
-				"gv",
-				"xdot",
-				"xdot1.2",
-				"xdot1.4",
-				"eps",
-				"exr",
-				"fig",
-				"gd",
-				"gd2",
-				"gif",
-				"gtk",
-				"ico",
-				"cmap",
-				"ismap",
-				"imap",
-				"cmapx",
-				"imap_np",
-				"cmapx_np",
 				"jpg",
-				"jpeg",
-				"jpe",
-				"jp2",
-				"json",
-				"json0",
-				"dot_json",
-				"xdot_json",
-				"pdf",
-				"pic",
-				"pct",
-				"pict",
-				"plain",
-				"plain-ext",
-				"png",
-				"pov",
-				"ps",
-				"ps2",
-				"psd",
-				"sgi",
-				"svg",
-				"svgz",
-				"tga",
-				"tiff",
-				"tif",
-				"tk",
-				"vml",
-				"vmlz",
-				"wbmp",
-				"webp",
-				"xlib",
-				"x11",
 			},
 		},
 	},
@@ -590,9 +660,9 @@ local opts = {
     server = {
 		-- standalone file support
 		-- setting it to false may improve startup time
-		standalone = true,
+		standalone = false,
         -- on_attach is a callback called when the language server attachs to the buffer
-        -- on_attach = on_attach,
+        on_attach = on_attach,
         cmd = { "rust-analyzer" },
         filetypes = { "rust" },
         settings = {
@@ -622,36 +692,3 @@ local opts = {
 
 require('rust-tools').setup(opts)
 EOF
-
-" Set completeopt to have a better completion experience
-" :help completeopt
-" menuone: popup even when there's only one match
-" noinsert: Do not insert text until a selection is made
-" noselect: Do not select, force user to select one from the menu
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing extra messages when using completion
-set shortmess+=c
-
-" Code navigation shortcuts
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> gf    <cmd>lua vim.lsp.buf.formatting()<CR>
-
-" Set updatetime for CursorHold
-" 300ms of no cursor movement to trigger CursorHold
-set updatetime=300
-" Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-
-" Goto previous/next diagnostic warning/error
-nnoremap <silent> g[ <cmd>lua vim.diagnostic.goto_prev()<CR>
-nnoremap <silent> g] <cmd>lua vim.diagnostic.goto_next()<CR>
